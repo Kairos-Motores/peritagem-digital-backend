@@ -286,7 +286,11 @@ app.post('/api/upload-foto', async (req, res) => {
       }
     }
 
-    res.json({ url: uploaded.webUrl, id: uploaded.id, name: nomeArquivo });
+    res.json({ 
+      url: uploaded['@microsoft.graph.downloadUrl'] || uploaded.webUrl, 
+      id: uploaded.id, 
+      name: nomeArquivo 
+    });
   } catch (error) {
     console.error('Erro no upload:', error);
     res.status(500).json({ message: error.message });
@@ -346,8 +350,8 @@ app.get('/api/fotos', async (req, res) => {
       .map(item => ({
         id: item.id,
         name: item.name,
-        url: item.webUrl,
-        thumbnailUrl: item.thumbnails?.[0]?.medium?.url || item.webUrl,
+        url: item['@microsoft.graph.downloadUrl'] || item.webUrl,
+        thumbnailUrl: item.thumbnails?.[0]?.medium?.url || item['@microsoft.graph.downloadUrl'] || item.webUrl,
       }));
 
     res.json(fotos);
@@ -427,7 +431,7 @@ app.post('/api/renomear-fotos-album', async (req, res) => {
         resultados.push({ quadradoNumero, status: 'erro', message: errText });
       } else {
         const updated = await renameRes.json();
-        resultados.push({ quadradoNumero, status: 'ok', url: updated.webUrl });
+        resultados.push({ quadradoNumero, status: 'ok', url: updated['@microsoft.graph.downloadUrl'] || updated.webUrl });
       }
     }
 
