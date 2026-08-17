@@ -18,6 +18,7 @@ app.use(cors({
   origin: [
     'https://peritagem-digital-kairosmotores-slz.vercel.app',
     'http://localhost:5173', // Mantém o suporte para testes locais com Vite
+    'http://localhost:5174',
     'http://localhost:3000'
   ],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
