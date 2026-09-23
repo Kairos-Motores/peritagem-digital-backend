@@ -258,7 +258,8 @@ app.post('/api/upload-foto', async (req, res) => {
 
     const base64Data = fotoBase64.replace(/^data:image\/\w+;base64,/, '');
     const buffer = Buffer.from(base64Data, 'base64');
-    const uploadUrl = `https://graph.microsoft.com/v1.0/drives/${drive.id}/root:/${encodeURIComponent(albumFolder)}/${encodeURIComponent(nomeArquivo)}:/content`;
+    const albumFolderEncoded = albumFolder.split('/').map(encodeURIComponent).join('/');
+    const uploadUrl = `https://graph.microsoft.com/v1.0/drives/${drive.id}/root:/${albumFolderEncoded}/${encodeURIComponent(nomeArquivo)}:/content`;
 
     const uploadRes = await fetch(uploadUrl, {
       method: 'PUT',
